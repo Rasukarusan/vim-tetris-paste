@@ -1,25 +1,26 @@
-" 空のバッファを作る
-let buf = nvim_create_buf(v:false, v:true)
-" そのバッファを使って floating windows を開く
-let height = float2nr(&lines * 0.5)
-let width = float2nr(&columns * 1.0)
-let row = float2nr((&columns - width) / 2)
-let col = float2nr((&columns - height) / 2)
-let opts = {
-    \ 'relative': 'editor',
-    \ 'row': 15,
-    \ 'col': 50,
-    \ 'width': 20,
-    \ 'height': 10,
-    \ 'anchor': 'NW',
-    \ 'style': 'minimal',
-\}
-let g:win_id = nvim_open_win(buf, v:true, opts)
-hi mycolor guifg=#ffffff guibg=#ffee06
-call nvim_win_set_option(win_id, 'winhighlight', 'Normal:mycolor')
-" call nvim_win_set_option(win_id, 'winblend', 100)
+function Init()
+    " 空のバッファを作る
+    let buf = nvim_create_buf(v:false, v:true)
+    " そのバッファを使って floating windows を開く
+    let height = float2nr(&lines * 0.5)
+    let width = float2nr(&columns * 1.0)
+    let row = float2nr((&columns - width) / 2)
+    let col = float2nr((&columns - height) / 2)
+    let opts = {
+        \ 'relative': 'editor',
+        \ 'row': 15,
+        \ 'col': 50,
+        \ 'width': 20,
+        \ 'height': 10,
+        \ 'anchor': 'NW',
+        \ 'style': 'minimal',
+    \}
+    let g:win_id = nvim_open_win(buf, v:true, opts)
+    hi mycolor guifg=#ffffff guibg=#ffee06
+    call nvim_win_set_option(g:win_id, 'winhighlight', 'Normal:mycolor')
 
-" terminal
+    " terminal
+endfunction
 
 function s:move_floating_window()
   let config = nvim_win_get_config(g:win_id)
@@ -31,28 +32,30 @@ function s:move_floating_window()
   let reset_config = nvim_win_set_config(g:win_id, newConfig)
 endfunction
 
-let i = 1
-let MAX_NUM = 50
-while i < MAX_NUM
-  " echo i
-  call s:move_floating_window()
-  " call nvim_win_set_width(g:win_id, i)
-  " call setline(i, i)
-  redraw!
-  let i += 1
-endwhile
+function s:main()
+    call Init()
+    let i = 1
+    let MAX_NUM = 50
+    while i < MAX_NUM
+      " echo i
+      call s:move_floating_window()
+      " call nvim_win_set_width(g:win_id, i)
+      call setline(i, i)
+      redraw!
+      let i += 1
+    endwhile
 
-let i = 1
-let MAX_NUM = 50
-while i < MAX_NUM
-  " sleep 50ms
-  call nvim_win_set_option(win_id, 'winblend', i*3)
-  redraw!
-  let i += 1
-endwhile
+    let i = 1
+    let MAX_NUM = 50
+    while i < MAX_NUM
+      " sleep 50ms
+      call nvim_win_set_option(g:win_id, 'winblend', i*3)
+      redraw!
+      let i += 1
+    endwhile
+endfunction
 
 let g:contents = Get_current_buffer_contents()
-" call Main()
 
 function! Main()
     " カーソル位置をFloatingWindowの位置まで移動
@@ -88,4 +91,8 @@ function Get_current_buffer_contents()
     return contents
 endfunction
 
-nnoremap M :call Main()<CR>
+
+nnoremap <silent> M :call <SID>main()<CR>
+
+
+
