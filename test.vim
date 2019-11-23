@@ -22,12 +22,11 @@ function Init()
     " terminal
 endfunction
 
-function s:move_floating_window()
-  let config = nvim_win_get_config(g:win_id)
+function s:move_floating_window(relative, row, col)
   let newConfig = {
-    \ 'relative': config.relative,
-    \ 'row': config.row,
-    \ 'col': config.col + 1,
+    \ 'relative': a:relative,
+    \ 'row': a:row,
+    \ 'col': a:col,
     \}
   let reset_config = nvim_win_set_config(g:win_id, newConfig)
 endfunction
@@ -37,8 +36,8 @@ function s:main()
     let i = 1
     let MAX_NUM = 50
     while i < MAX_NUM
-      " echo i
-      call s:move_floating_window()
+      let config = nvim_win_get_config(g:win_id)
+      call s:move_floating_window(config.relative, config.row, config.col+1)
       " call nvim_win_set_width(g:win_id, i)
       call setline(i, i)
       redraw!
