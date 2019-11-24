@@ -77,8 +77,72 @@ function Get_current_buffer_contents()
     return contents
 endfunction
 
+function s:create_clipboard_window() abort
+    if get(g:, 'win_id_clipboard') != 0 && nvim_win_is_valid(g:win_id_clipboard) == v:true
+        return
+    endif 
+    let buf = nvim_create_buf(v:true, v:true)
+    let opts = {
+        \ 'relative': 'editor',
+        \ 'row': 5,
+        \ 'col': 200,
+        \ 'width': 50,
+        \ 'height': 20,
+        \ 'anchor': 'NW',
+        \ 'style': 'minimal',
+    \}
+    let g:win_id_clipboard = nvim_open_win(buf, v:false, opts)
+    hi board_color guifg=#ffffff guibg=#cd4e38
+    echo "クリップボードを作成:" . g:win_id_clipboard
+    echo win_id2win(g:win_id_clipboard)
+    call nvim_win_set_option(g:win_id_clipboard, 'winhighlight', 'Normal:board_color')
+    call nvim_win_set_option(g:win_id_clipboard, 'winblend', 30)
+    call nvim_win_set_config(g:win_id_clipboard, opts)
+endfunction
+
+" win_id,win_num,bufnr等の各種変換に参考になるサイト
+" http://koturn.hatenablog.com/entry/2018/02/14/000000
+
+" call Init()
+
+call s:create_clipboard_window()
+
+function Tetris_insert()
+    let buf = nvim_create_buf(v:false, v:true)
+    let startRow = 1
+    let opts = {
+        \ 'relative': 'editor',
+        \ 'row': startRow,
+        \ 'col': 10,
+        \ 'width': 20,
+        \ 'height': 1,
+        \ 'anchor': 'NW',
+        \ 'style': 'minimal',
+        \}
+    let win_id = nvim_open_win(buf, v:false, opts)
+    hi mycolor guifg=#ffffff guibg=#dd6900
+    call nvim_win_set_option(win_id, 'winhighlight', 'Normal:mycolor')
+    call nvim_win_set_option(win_id, 'winblend', 40)
+
+    let line = line('.')
+    let move_y = line(".") - line("w0") - startRow
+    let i = 0
+    while i <= move_y
+        call s:move_floating_window(win_id, opts.relative, opts.row + i + 1, opts.col)
+        " sleep 50ms
+        let i += 1
+    endwhile
+    call append(expand('.'), '')
+
+    let win = win_id2win(g:win_id_clipboard)
+    echo win
+    execute win . "windo " . "call setline(1,'hogehoge')"
+
+    " execute 'normal p'
+
+    " call nvim_win_close(win_id, 1)
+endfunction
 
 nnoremap <silent> M :call <SID>main()<CR>
-
-
-
+nnoremap <silent> T :call Tetris_insert()<CR>
+nnoremap <silent>A :echo win_id2win(g:win_id_clipboard)<CR>
