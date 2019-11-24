@@ -18,8 +18,6 @@ function Init()
     let g:win_id = nvim_open_win(buf, v:true, opts)
     hi mycolor guifg=#ffffff guibg=#ffee06
     call nvim_win_set_option(g:win_id, 'winhighlight', 'Normal:mycolor')
-
-    " terminal
 endfunction
 
 function s:move_floating_window(win_id, relative, row, col)
@@ -43,18 +41,7 @@ function s:main()
       call setline(i, i)
       let i += 1
     endwhile
-
-    let i = 1
-    let MAX_NUM = 50
-    while i < MAX_NUM
-      " sleep 50ms
-      call nvim_win_set_option(g:win_id, 'winblend', i*3)
-      redraw!
-      let i += 1
-    endwhile
 endfunction
-
-let g:contents = Get_current_buffer_contents()
 
 function! Main()
     " カーソル位置をFloatingWindowの位置まで移動
@@ -78,7 +65,7 @@ endfunction
 
 function ExpandBySpace(line, column, num)
     call cursor(a:line, a:column)
-    execute ":normal " . string(a:num) . "a" . " "
+    execute ":normal " . string(a:num) . "A" . " "
 endfunction
 
 function Get_current_buffer_contents()
