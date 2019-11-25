@@ -10,7 +10,7 @@ Paste the contents of the clipboard from the top.
 
 ## Demo
 
-<img src="https://user-images.githubusercontent.com/17779386/69538032-bbfabd80-0fc4-11ea-85e2-4da46b2317b8.gif" width=500>
+<img src="https://user-images.githubusercontent.com/17779386/69538032-bbfabd80-0fc4-11ea-85e2-4da46b2317b8.gif" width=700>
 
 
 ## Requirement
