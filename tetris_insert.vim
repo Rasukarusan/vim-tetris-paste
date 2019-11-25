@@ -26,7 +26,7 @@ function! s:transparency_window(win_id)
     endwhile
 endfunction
 
-function! s:get_start_col() 
+function! s:get_col() 
     " 行番号を非表示にしている場合は調整不要なので0を返す
     if &number == 0
         return 0
@@ -43,9 +43,9 @@ endfunction
 
 function! s:main()
     let start_row = 1
-    let start_col = s:get_start_col()
+    let col = s:get_col()
     let width = s:get_width()
-    let config = { 'relative': 'editor', 'row': start_row, 'col': start_col, 'width': width, 'height': 1, 'anchor': 'NW', 'style': 'minimal',}
+    let config = { 'relative': 'editor', 'row': start_row, 'col': col, 'width': width, 'height': 1, 'anchor': 'NW', 'style': 'minimal',}
     let win_id = s:create_window(config)
 
     " floating windowにクリップボードの内容をペースト
