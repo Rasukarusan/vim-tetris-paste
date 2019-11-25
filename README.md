@@ -10,11 +10,14 @@ Paste the contents of the clipboard from the top.
 
 ## Demo
 
-![Demo.gif](https://user-images.githubusercontent.com/17779386/69538032-bbfabd80-0fc4-11ea-85e2-4da46b2317b8.gif)
+<img href="https://user-images.githubusercontent.com/17779386/69538032-bbfabd80-0fc4-11ea-85e2-4da46b2317b8.gif" width=300>
+
 
 ## Requirement
 
 - NeoVim(0.4)
+
+This script use `floating window` and some neovim method.
 
 ## Install
 
