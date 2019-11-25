@@ -22,7 +22,10 @@ function! s:transparency_window(win_id)
     while i <= 50
         call nvim_win_set_option(a:win_id, 'winblend', i*2)
         let i += 1
-        redraw
+        " 毎回redrawするとカクつくため
+        if i % 2 == 0
+            redraw
+        endif
     endwhile
 endfunction
 
