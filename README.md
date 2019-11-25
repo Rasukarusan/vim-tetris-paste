@@ -6,6 +6,7 @@ Vim-TETRIS-Paste
 ## Description
 
 Vim paste like TETRIS.
+Paste the contents of the clipboard from the top.
 
 ## Demo
 
@@ -17,5 +18,16 @@ Vim paste like TETRIS.
 
 ## Install
 
+This is not plugin. Customize and use freely.
+
 ## Usage
 
+1. Open tetris_paste.vim
+```bash
+$ vim tetris_paste.vim
+```
+2. Source tetris_paste.vim
+```vim
+:source %
+```
+3. Press `Shift-T`
