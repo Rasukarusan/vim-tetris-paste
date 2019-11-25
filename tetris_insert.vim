@@ -31,25 +31,58 @@ function! s:get_col()
     if &number == 0
         return 0
     endif
-    " カレントバッファの最大行数から、その桁数をcolの開始位置として返す
+    " 行数を表示している場合、行数の桁数分調整する必要がある. e.g) max_line = 100の場合3(桁)
     " +2しているのは行番号表示用ウィンドウの行頭/末のスペース分
-    return strlen(line("w$")) + 2
+    let max_line = line("w$")
+    return strlen(max_line) + 2
 endfunction
 
-" クリップボードの文字列の長さをwidthとして返す
 function! s:get_width() 
     return strlen(@*)
 endfunction
 
+function! s:get_height() 
+    let contents = split(@*,'\n')
+    return len(contents)
+endfunction
+
+function! s:paste_to_current_window(number_of_line)
+    if a:number_of_line == 1
+        let @* = substitute(@*,"\n","","g")
+        let @* = @* . "\n"
+    endif
+    execute 'normal p'
+endfunction
+
+" ペーストする内容を入れる(表示する)ための空行を挿入
+function! s:insert_empty_line(row)
+    let i = 0
+    while i < a:row
+        call append(expand('.'), '')
+        let i += 1
+    endwhile
+endfunction
+
+function! s:delete_empty_line(row)
+    execute 'normal ' . a:row . 'j'
+    execute 'normal ' . a:row . '"_dd'
+    execute 'normal ' . a:row . 'k'
+endfunction
+
 function! s:main()
-    let start_row = 1
+    let start_row = 10
     let col = s:get_col()
     let width = s:get_width()
-    let config = { 'relative': 'editor', 'row': start_row, 'col': col, 'width': width, 'height': 1, 'anchor': 'NW', 'style': 'minimal',}
+    let height = s:get_height()
+    let config = { 'relative': 'editor', 'row': start_row, 'col': col, 'width': width, 'height': height, 'anchor': 'NW', 'style': 'minimal',}
+    if width == 0 || height == 0
+        return
+    endif
+
     let win_id = s:create_window(config)
 
     " floating windowにクリップボードの内容をペースト
-    execute 'normal p'
+    execute 'normal P'
     " フォーカスをカレントウィンドウに戻す
     execute "0windo " . ":"
 
@@ -63,14 +96,19 @@ function! s:main()
         let i += 1
     endwhile
 
-    " 空行を挿入
-    execute 'normal o'
+    " ペースト内容を表示するための空行を挿入
+    call s:insert_empty_line(height)
+
     " floating windowを透明化
     call s:transparency_window(win_id)
-    " カレントウィンドウにクリップボードの内容をペースト
-    let @* = substitute(@*,"\n","","g")
-    execute 'normal p'
 
+    " カレントウィンドウにクリップボードの内容をペースト
+    call s:paste_to_current_window(height)
+
+    " 事前に挿入した空行を削除
+    call s:delete_empty_line(height)
+
+    " floating windowを削除
     call nvim_win_close(win_id, v:true)
 endfunction
 
