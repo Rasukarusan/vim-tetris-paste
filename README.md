@@ -16,6 +16,7 @@ Paste the contents of the clipboard from the top.
 ## Requirement
 
 - NeoVim(0.4)
+- +clipboard
 
 This script use `floating window` and some neovim method.
 
