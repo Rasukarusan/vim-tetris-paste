@@ -90,7 +90,6 @@ function! s:main()
     execute "0windo " . ":"
 
     " floating windowを上から降らす
-    let line = line('.')
     let move_y = line(".") - line("w0") - start_row
     let i = 0
     while i <= move_y
