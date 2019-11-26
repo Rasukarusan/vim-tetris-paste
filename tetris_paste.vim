@@ -35,9 +35,9 @@ function! s:get_col()
         return 0
     endif
     " 行数を表示している場合、行数の桁数分調整する必要がある. e.g) max_line = 100の場合3(桁)
-    " +2しているのは行番号表示用ウィンドウの行頭/末のスペース分
-    let max_line = line("w$")
-    return strlen(max_line) + 2
+    " +1しているのは行番号表示用ウィンドウのスペース分
+    let max_line = line("$")
+    return strlen(max_line) + 1
 endfunction
 
 function! s:get_width() 
