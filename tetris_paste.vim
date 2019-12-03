@@ -73,7 +73,7 @@ function! s:delete_empty_line(row)
 endfunction
 
 function! s:main()
-    let start_row = 1
+    let start_row = 10
     let col = s:get_col()
     let width = s:get_width()
     let height = s:get_height()
