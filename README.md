@@ -1,7 +1,5 @@
-Name 
+Vim TETRIS Paste 
 ====
-
-Vim-TETRIS-Paste
 
 ## Description
 
