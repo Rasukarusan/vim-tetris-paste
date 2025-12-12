@@ -44,6 +44,8 @@ use 'Rasukarusan/vim-tetris-paste'
 
 Press `T` in normal mode to paste clipboard content with TETRIS animation.
 
+Supports dot-repeat (`.`) - no additional plugin required.
+
 Or use the command:
 
 ```vim
@@ -75,8 +77,8 @@ let g:tetris_paste_no_default_key = 1
 " Disable default mapping
 let g:tetris_paste_no_default_key = 1
 
-" Set your own mapping
-nnoremap <silent> <Leader>p :TetrisPaste<CR>
+" Set your own mapping (with dot-repeat support)
+nnoremap <silent> <Leader>p :set opfunc=tetris_paste#opfunc<CR>g@l
 ```
 
 ## License

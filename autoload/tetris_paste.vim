@@ -88,6 +88,11 @@ function! s:delete_empty_line(row) abort
   execute 'normal ' . a:row . 'k'
 endfunction
 
+" Operator function for dot-repeat support
+function! tetris_paste#opfunc(type) abort
+  call tetris_paste#paste()
+endfunction
+
 function! tetris_paste#paste() abort
   let start_row = g:tetris_paste_start_row
   let col = s:get_col()
