@@ -39,12 +39,14 @@ function! s:create_window(config) abort
 endfunction
 
 function! s:transparency_window(win_id) abort
+  let wait = max([1, g:tetris_paste_speed / 5])
   let i = 0
   while i <= 50
     call nvim_win_set_option(a:win_id, 'winblend', i*2)
     let i += 1
     if i % 2 == 0
       redraw
+      execute 'sleep ' . wait . 'ms'
     endif
   endwhile
 endfunction
@@ -94,7 +96,10 @@ function! tetris_paste#opfunc(type) abort
 endfunction
 
 function! tetris_paste#paste() abort
-  let start_row = g:tetris_paste_start_row
+  " Start from the configured row, or from the top of the screen when the
+  " cursor sits above it, so that there is always some distance to fall
+  let cursor_row = line('.') - line('w0')
+  let start_row = cursor_row < g:tetris_paste_start_row ? 0 : g:tetris_paste_start_row
   let col = s:get_col()
   let width = s:get_width()
   let height = s:get_height()
@@ -120,7 +125,7 @@ function! tetris_paste#paste() abort
   execute "0windo " . ":"
 
   " Drop floating window from top
-  let move_y = line(".") - line("w0") - start_row
+  let move_y = cursor_row - start_row
   let i = 0
   while i <= move_y
     call s:move_floating_window(win_id, config.relative, config.row + i + 1, config.col)

@@ -55,10 +55,12 @@ Or use the command:
 ## Configuration
 
 ```vim
-" Falling speed (ms) - default: 10
+" Animation interval (ms) - larger is slower - default: 10
 let g:tetris_paste_speed = 10
 
-" Start row position - default: 10
+" Screen row the block starts falling from.
+" When the cursor is above this row, the block falls from the top of the screen.
+" default: 10
 let g:tetris_paste_start_row = 10
 
 " Highlight color - default: 'guifg=#ffffff guibg=#dd6900'
